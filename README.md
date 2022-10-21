@@ -22,6 +22,12 @@ Only for using as reference.
 
 原因を調査する気力も無いのですが、せっかく書いたのでアップロードしてみました。
 
+## ロジック
+
+1. 歩み値からローソク足を計算
+2. ローソク足からパラボリックSARを計算
+3. パラボリックSARが価格より下ならbuy、上ならsell
+
 ## License
 
 [BSD 3-Clause "New" or "Revised" License](https://github.com/mopeneko/bitflyer-trading-bot/blob/main/LICENSE)
