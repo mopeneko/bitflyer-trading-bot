@@ -83,7 +83,6 @@ def on_message(ws, message):
             timestamp = new_timestamp
             prices = [price]
             continue
-
         if (new_timestamp - timestamp).seconds > 60:
             timestamp = new_timestamp
             ohlcv.append([max(prices), min(prices), prices[-1]])
@@ -114,12 +113,10 @@ def cancel_closed_orders():
             sell += size
         else:
             buy += size
-
     if buy >= 0.01:
         create_position("buy", amount="{:.8f}".format(buy))
     if sell >= 0.01:
         create_position("sell", amount="{:.8f}".format(sell))
-
     if buy >= 0.01 or sell >= 0.01:
         while True:
             if len(fetch_closed_orders()) == 0:
@@ -168,7 +165,6 @@ def process():
 
     if len(ohlcv) < 2:
         return
-
     df = pd.DataFrame(ohlcv, columns=["high", "low", "last"])
 
     sar = float(talib.SAR(df["high"], df["low"])[-1:])
@@ -176,11 +172,9 @@ def process():
     if sar < float(df["last"][-1:]):
         if position == Position.BUY:
             return
-
         if position == Position.SELL:
             cancel_closed_orders()
             position = Position.NONE
-
         amount = calc_amount(last)
         logging.info("注文中...")
         try:
@@ -205,11 +199,9 @@ def process():
     else:
         if position == Position.SELL:
             return
-
         if position == Position.BUY:
             cancel_closed_orders()
             position = Position.NONE
-
         amount = calc_amount(last)
         logging.info("注文中...")
         try:
@@ -231,7 +223,6 @@ def process():
         logging.info(f"sell {amount} BTC")
         notify(f"sell {amount} BTC")
         position = Position.SELL
-
     entry_price = last
 
 
@@ -262,7 +253,5 @@ while True:
             notify(f"<@{DISCORD_USER_ID}> エラーが発生しました\n```{e}```")
         except:
             pass
-
         logging.error(e)
-
     time.sleep(1)
